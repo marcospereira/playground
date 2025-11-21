@@ -1,0 +1,148 @@
+version: 2.1
+
+executors:
+  docker-executor:
+    docker:
+      - image: cimg/openjdk:21.0
+
+  machine-executor:
+    machine: true
+
+.executors-matrix: &executors-matrix
+  matrix:
+    parameters:
+      executor: [ "docker-executor", "machine-executor" ]
+
+commands:
+  install-java:
+    parameters:
+      executor:
+        type: string
+    steps:
+      - when:
+          condition:
+            equal: [ "machine-executor", << parameters.executor >> ]
+          steps:
+            - run: |
+                sudo apt-get update
+                sudo apt-get install openjdk-21-jdk
+                java -version
+
+  restore-gradle-cache:
+    steps:
+      - restore_cache:
+          keys:
+            - gradle-{{ checksum "build.gradle.kts" }}-{{ checksum "settings.gradle.kts" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+            - gradle-
+
+  save-gradle-cache:
+    steps:
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: gradle-{{ checksum "build.gradle.kts" }}-{{ checksum "settings.gradle.kts" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+
+jobs:
+
+  just-checkout:
+    parameters:
+      checkout-method:
+        type: string
+        default: full
+    executor: machine-executor
+    steps:
+      - checkout:
+          method: << parameters.checkout-method >>
+
+  build:
+    parameters:
+      executor:
+        type: string
+    executor: << parameters.executor >>
+    steps:
+      - checkout
+      - install-java:
+          executor: << parameters.executor >>
+      - restore-gradle-cache
+      - run: ./gradlew build -x test
+      - save-gradle-cache
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build
+    retention:
+      caches: 1d
+
+  test:
+    parameters:
+      executor:
+        type: string
+    executor: << parameters.executor >>
+    steps:
+      - checkout
+      - install-java:
+          executor: << parameters.executor >>
+      - attach_workspace:
+          at: .
+      - restore-gradle-cache
+      - run: ./gradlew test --rerun
+      - store_test_results:
+          path: build/test-results
+      - save-gradle-cache
+
+  step-rerun:
+    executor: docker-executor
+    steps:
+      - checkout
+      - restore-gradle-cache
+      - run:
+          command: ./gradlew run --args="stepRerun"
+          max_auto_reruns: 3
+          auto_rerun_delay: 15s
+      - save-gradle-cache
+
+  workflow-rerun:
+    executor: docker-executor
+    steps:
+      - checkout
+      - restore-gradle-cache
+      - run:
+          command: ./gradlew run --args="workflowRerun"
+      - save-gradle-cache
+
+workflows:
+  build-and-test-machine:
+    jobs:
+      - build:
+          executor: machine-executor
+      - test:
+          executor: machine-executor
+          requires:
+            - build
+
+  build-and-test-docker:
+    jobs:
+      - build:
+          executor: docker-executor
+      - test:
+          executor: docker-executor
+          requires:
+            - build
+
+  full-checkout:
+    jobs:
+      - just-checkout
+
+  blobless-checkout:
+    jobs:
+      - just-checkout:
+          checkout-method: blobless
+
+  with-step-rerun:
+    jobs:
+      - step-rerun
+
+  with-workflow-rerun:
+    max_auto_reruns: 5
+    jobs:
+      - workflow-rerun

@@ -1,0 +1,52 @@
+{
+  // Helps with autocompletion
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "baseBranchPatterns": [
+    "main",
+    "/^version-4.[8-9]$/"
+  ],
+  "packageRules": [
+    // First disable major and minor updates
+    {
+      "description": "Disable major and minor updates for version branches",
+      "matchBaseBranches": [
+        "/^version-4.[8-9]$/"
+      ],
+      "matchUpdateTypes": [
+        "major", "minor"
+      ],
+      "enabled": false
+    },
+    // Then enable security updates
+    {
+      "description": "Automerge CVE/Security updates for version branches",
+      "matchBaseBranches": [
+        "/^version-4.[8-9]$/"
+      ],
+      "vulnerabilityAlerts": {
+        "enabled": true,
+        "labels": ["AUTOMERGE", "CVE"]
+      },
+      "automerge": true,
+      "automergeSchedule": [
+        "* 8-17 * * 1-5"
+      ]
+    },
+    // Then enable patch/digest updates.
+    {
+      "description": "Automerge patch/digest updates for version branches",
+      "matchUpdateTypes": ["patch", "digest"],
+      "automerge": true,
+      "matchBaseBranches": [
+        "/^version-4.[8-9]$/"
+      ],
+      "automergeSchedule": [
+        "* 8-17 * * 1-5"
+      ],
+      "labels": [
+        "AUTOMERGE", "patch-deps"
+      ]
+    }
+  ]
+}
