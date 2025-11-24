@@ -49,8 +49,10 @@ testlogger {
     showStackTraces = true
 }
 
-kotlin {
-    jvmToolchain(21)
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 application {
