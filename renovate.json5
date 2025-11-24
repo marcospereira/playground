@@ -7,6 +7,13 @@
     "/^version-4.[8-9]$/"
   ],
   "packageRules": [
+    {
+      groupName: 'kotest',
+      groupSlug: 'kotest',
+      matchPackageNames: [
+        'io.kotest{/,}**',
+      ],
+    },
     // First disable major and minor updates
     {
       "description": "Disable major and minor updates for version branches",
