@@ -30,7 +30,7 @@ dependencies {
     implementation("commons-io:commons-io:2.13.0")
 
     // Has a minor update with no CVE
-    implementation("org.apache.commons:commons-lang3:3.18.0")
+    implementation("org.apache.commons:commons-lang3:3.20.0")
 
     // Has a major update with no CVE
     implementation("org.apache.lucene:lucene-core:9.12.3")
