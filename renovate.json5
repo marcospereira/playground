@@ -27,11 +27,7 @@
       "vulnerabilityAlerts": {
         "enabled": true,
         "labels": ["AUTOMERGE", "CVE"]
-      },
-      "automerge": true,
-      "automergeSchedule": [
-        "* 8-17 * * 1-5"
-      ]
+      }
     },
     // Then enable patch/digest updates.
     {
@@ -40,9 +36,6 @@
       "automerge": true,
       "matchBaseBranches": [
         "/^version-4.[8-9]$/"
-      ],
-      "automergeSchedule": [
-        "* 8-17 * * 1-5"
       ],
       "labels": [
         "AUTOMERGE", "patch-deps"
