@@ -27,7 +27,7 @@ dependencies {
     implementation("com.squareup.okio:okio:3.16.3")
 
     // Has a minor update that fixes a CVE
-    implementation("commons-io:commons-io:2.13.0")
+    implementation("commons-io:commons-io:2.21.0")
 
     // Has a minor update with no CVE
     implementation("org.apache.commons:commons-lang3:3.18.0")
