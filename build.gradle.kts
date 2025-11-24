@@ -24,7 +24,7 @@ dependencies {
     // Dependencies below were added for Renovate testing.
 
     // Has a patch update with no CVE
-    implementation("com.squareup.okio:okio:3.16.3")
+    implementation("com.squareup.okio:okio:3.16.4")
 
     // Has a minor update that fixes a CVE
     implementation("commons-io:commons-io:2.13.0")
