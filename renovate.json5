@@ -39,7 +39,7 @@
         "/^version-4.[8-9]$/"
       ],
       "matchJsonata": ["$exists(isVulnerabilityAlert) and isVulnerabilityAlert = true"],
-      "enable": true,
+      "enabled": true,
       "labels": [
         "AUTOMERGE", "CVE", "security"
       ]
