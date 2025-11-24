@@ -6,6 +6,9 @@
     "main",
     "/^version-4.[8-9]$/"
   ],
+  // Forces Renovate to scan for CVEs itself without requiring
+  // GH Dependabot alerts.
+  "osvVulnerabilityAlerts": true,
   "packageRules": [
     {
       groupName: 'kotest',
