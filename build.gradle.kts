@@ -1,4 +1,4 @@
-it import com.adarshr.gradle.testlogger.theme.ThemeType
+import com.adarshr.gradle.testlogger.theme.ThemeType
 
 plugins {
     application
