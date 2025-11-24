@@ -3,7 +3,7 @@ version: 2.1
 executors:
   docker-executor:
     docker:
-      - image: cimg/openjdk:21.0
+      - image: cimg/openjdk:21.0.9
 
   machine-executor:
     machine: true
