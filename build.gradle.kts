@@ -33,7 +33,7 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.18.0")
 
     // Has a major update with no CVE
-    implementation("org.apache.lucene:lucene-core:9.12.3")
+    implementation("org.apache.lucene:lucene-core:10.3.2")
 
     // Has a major update with CVE
     implementation("org.springframework:spring-web:5.3.37")
