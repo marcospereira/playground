@@ -2,7 +2,7 @@ import com.adarshr.gradle.testlogger.theme.ThemeType
 
 plugins {
     application
-    kotlin("jvm") version "2.2.20"
+    kotlin("jvm") version "2.2.21"
     id("io.kotest") version "6.0.4"
     id("com.adarshr.test-logger") version "4.0.0"
 }
